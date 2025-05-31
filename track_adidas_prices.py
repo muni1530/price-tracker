@@ -18,7 +18,8 @@ tracking_ws = sh.worksheet(TRACKING_TAB)
 history_ws = sh.worksheet(HISTORY_TAB)
 
 def get_adidas_price(url):
-    resp = requests.get(url)
+    print(f"Fetching: {url}")
+    resp = requests.get(url, timeout=10)
     soup = BeautifulSoup(resp.text, 'html.parser')
     # Try typical selectors; adjust if needed
     title = soup.find('h1')
@@ -31,6 +32,7 @@ def get_adidas_price(url):
 
 def main():
     products = tracking_ws.get_all_records()
+    print(f"Found {len(products)} products to track.")
     today = datetime.today().strftime('%Y-%m-%d')
     for product in products:
         url = product['Product URL']
@@ -38,9 +40,12 @@ def main():
         try:
             title, price, sale = get_adidas_price(url)
         except Exception as e:
+            print(f"Error fetching {url}: {e}")
             title, price, sale = "", "", ""
         row = [today, url, title or name, price, sale]
         history_ws.append_row(row, value_input_option="USER_ENTERED")
+        print(f"Logged: {title or name} | Price: {price} | Sale: {sale}")
+    print("✅ All products processed and logged!")
 
 if __name__ == "__main__":
     main()
