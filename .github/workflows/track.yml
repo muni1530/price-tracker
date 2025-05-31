@@ -10,18 +10,13 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
-      - name: Set up Python
-        uses: actions/setup-python@v4
+      - name: Authenticate to Google Cloud
+        uses: google-github-actions/auth@v2
         with:
-          python-version: '3.11'
+          workload_identity_provider: 'projects/608211164396/locations/global/workloadIdentityPools/github-pool/providers/github-provider'
+          service_account: 'sa-pricetracker-sheetsapi@pricetracker-461517.iam.gserviceaccount.com'
       - name: Install dependencies
-        run: |
-          pip install gspread google-auth requests beautifulsoup4
-      - name: Write credentials
-        run: |
-          echo "${{ secrets.GOOGLE_CREDENTIALS }}" | perl -pe 's/\\n/\n/g' > credentials.json
-      - name: Show credentials file (DEBUG)
-        run: cat credentials.json
+        run: pip install gspread google-auth requests beautifulsoup4
       - name: Run price tracker
         env:
           SHEET_ID: ${{ secrets.SHEET_ID }}

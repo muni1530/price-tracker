@@ -1,16 +1,17 @@
 import gspread
-from google.oauth2.service_account import Credentials
+from google.auth import default
 import requests
 from bs4 import BeautifulSoup
 from datetime import datetime
+import os
 
 # --- Google Sheets Setup ---
-SHEET_ID = 'YOUR_SHEET_ID'
+SHEET_ID = os.environ.get('SHEET_ID')
 TRACKING_TAB = 'Tracking List'
 HISTORY_TAB = 'Price History'
 
 SCOPES = ["https://www.googleapis.com/auth/spreadsheets"]
-CREDS = Credentials.from_service_account_file("credentials.json", scopes=SCOPES)
+CREDS, _ = default(scopes=SCOPES)
 gc = gspread.authorize(CREDS)
 sh = gc.open_by_key(SHEET_ID)
 tracking_ws = sh.worksheet(TRACKING_TAB)
