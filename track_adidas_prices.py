@@ -19,7 +19,8 @@ history_ws = sh.worksheet(HISTORY_TAB)
 
 def get_adidas_price(url):
     print(f"Fetching: {url}")
-    resp = requests.get(url, timeout=10)
+    headers = {"User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36"}
+    resp = requests.get(url, headers=headers, timeout=10)
     soup = BeautifulSoup(resp.text, 'html.parser')
     # Try typical selectors; adjust if needed
     title = soup.find('h1')
