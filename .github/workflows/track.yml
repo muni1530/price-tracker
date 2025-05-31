@@ -18,7 +18,7 @@ jobs:
         run: |
           pip install gspread google-auth requests beautifulsoup4
       - name: Write credentials
-        run: echo "${{ secrets.GOOGLE_CREDENTIALS }}" > credentials.json
+        run: printf "%s" "${{ secrets.GOOGLE_CREDENTIALS }}" > credentials.json
       - name: Show credentials file (DEBUG)
         run: cat credentials.json
       - name: Run price tracker
