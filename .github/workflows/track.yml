@@ -1,9 +1,9 @@
 name: Daily Adidas Price Tracking
 
-on:
-  schedule:
-    - cron: "0 8 * * *" # Runs every day at 8 AM UTC
-  workflow_dispatch:
+#on:
+#  schedule:
+#    - cron: "0 8 * * *" # Runs every day at 8 AM UTC
+#  workflow_dispatch:
 
 permissions:
   id-token: write
